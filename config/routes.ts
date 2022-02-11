@@ -21,6 +21,7 @@
   {
     path: '/Home',
     name: '首页',
+    icon: 'HomeOutlined',
     component: './Home/Home',
   },
   {
