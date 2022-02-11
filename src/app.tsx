@@ -5,7 +5,7 @@ import type { RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import * as service from './services/api';
 import { LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
 
@@ -28,8 +28,9 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
-      return msg.data;
+      const { data, status } = await service.queryUserInfo();
+      if (status !== true) return undefined;
+      return data;
     } catch (error) {
       history.push(loginPath);
     }

@@ -5,7 +5,7 @@ import { history, useModel } from 'umi';
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
-import { outLogin } from '@/services/ant-design-pro/api';
+import { outLogin } from '@/services/api';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 
 /**
@@ -17,6 +17,7 @@ const loginOut = async () => {
   const { redirect } = query;
   // Note: There may be security issues, please note
   if (window.location.pathname !== '/user/login' && !redirect) {
+    localStorage.clear();
     history.replace({
       pathname: '/user/login',
       search: stringify({

@@ -11,8 +11,7 @@ import React, { useState } from 'react';
 import { ProFormCaptcha, ProFormText, LoginForm } from '@ant-design/pro-form';
 import { history, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import * as service from '@/services/api';
 
 import styles from './index.less';
 
@@ -47,9 +46,13 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
+      if (!(values.username && values.password)) return;
+      const { data, msg, status } = await service.login({ ...values });
+      if (status === true) {
         message.success('登录成功！');
+        // 设置token
+        localStorage.setItem('web-app-1-token', data.token);
+        // 获取用户信息
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
@@ -58,7 +61,6 @@ const Login: React.FC = () => {
         history.push(redirect || '/');
         return;
       }
-      console.log(msg);
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
     } catch (error) {
@@ -173,12 +175,6 @@ const Login: React.FC = () => {
                   },
                 ]}
                 onGetCaptcha={async (phone) => {
-                  const result = await getFakeCaptcha({
-                    phone,
-                  });
-                  if (result === false) {
-                    return;
-                  }
                   message.success('获取验证码成功！验证码为：1234');
                 }}
               />
