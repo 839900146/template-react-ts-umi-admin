@@ -1,15 +1,20 @@
-import { request } from 'umi';
-
+import request from '@/utils/request';
 /**
  * 登陆获取token
  */
-export async function login(params: { username: string; password: string; type: string }) {
+interface LoginParans {
+  username: string;
+  password: string;
+  type: string;
+}
+export async function login(params: LoginParans) {
   return {
     status: true,
     code: 200,
     msg: '登陆成功',
     data: {
       token: '123456',
+      ...params,
     },
   };
 }
@@ -37,4 +42,7 @@ export async function queryUserInfo() {
 /**
  * 退出登录
  */
-export async function outLogin() {}
+export async function outLogin() {
+  // 这是一个示例
+  return request.post('http://xxx', { a: 1 });
+}

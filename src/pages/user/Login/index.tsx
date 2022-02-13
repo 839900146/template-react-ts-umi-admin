@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import { ProFormCaptcha, ProFormText, LoginForm } from '@ant-design/pro-form';
 import { history, useModel } from 'umi';
 import Footer from '@/components/Footer';
+import { SetToken } from '@/utils';
 import * as service from '@/services/api';
 
 import styles from './index.less';
@@ -51,7 +52,7 @@ const Login: React.FC = () => {
       if (status === true) {
         message.success('登录成功！');
         // 设置token
-        localStorage.setItem('web-app-1-token', data.token);
+        SetToken(data.token);
         // 获取用户信息
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
@@ -175,6 +176,7 @@ const Login: React.FC = () => {
                   },
                 ]}
                 onGetCaptcha={async (phone) => {
+                  console.log(phone);
                   message.success('获取验证码成功！验证码为：1234');
                 }}
               />
