@@ -13,4 +13,7 @@ export default {
     server3: 'http://localhost:8003',
     server4: 'http://localhost:8004',
   },
+  assetDir: 'static',
+  publicPath: '/web/',
+  base: '/web/',
 };
