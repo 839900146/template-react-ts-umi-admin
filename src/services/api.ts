@@ -44,5 +44,5 @@ export async function queryUserInfo() {
  */
 export async function outLogin() {
   // 这是一个示例
-  return request.post('http://xxx', { a: 1 });
+  return request.post('/xxx', { a: 1 });
 }
