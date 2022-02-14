@@ -6,6 +6,22 @@ import path from 'path';
 import CompressionWebpackPlugin from 'compression-webpack-plugin';
 import server from './server';
 import pkg from '../package.json';
+const isProduction = process.env.NODE_ENV === 'production';
+// CDN配置
+const CdnConfig = {
+  externals: {
+    react: 'window.React',
+    'react-dom': 'window.ReactDOM',
+    moment: 'window.moment',
+    lodash: 'window._',
+  },
+  scripts: [
+    'https://cdn.bootcdn.net/ajax/libs/react/17.0.0/umd/react.production.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.0/umd/react-dom.production.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.0/moment.min.js',
+    'https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.0/lodash.min.js',
+  ],
+};
 const moduleSplitRule = {
   antd: {
     chunks: 'all',
@@ -183,8 +199,10 @@ export default {
   publicPath: server.publicPath,
   // 网站二级目录
   base: server.base,
+  devtool: isProduction ? false : 'eval-cheap-module-source-map',
+  ...CdnConfig,
   chainWebpack: (config: any) => {
-    config.when(process.env.NODE_ENV === 'production', (config: any) => {
+    config.when(isProduction, (config: any) => {
       // 执行路径重置
       resetOutputDir(config);
       // 执行代码压缩
