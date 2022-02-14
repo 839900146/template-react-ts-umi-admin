@@ -1,6 +1,89 @@
+/**
+ * 如果没有特殊需要, 不建议再对本文件做修改
+ */
+
 import path from 'path';
 import CompressionWebpackPlugin from 'compression-webpack-plugin';
 import server from './server';
+import pkg from '../package.json';
+const moduleSplitRule = {
+  antd: {
+    chunks: 'all',
+    name: 'antd',
+    test: /[\\/]node_modules[\\/](antd|@antd)[\\/]/,
+    priority: 10,
+  },
+  '@ant-design': {
+    chunks: 'all',
+    name: '@ant-design',
+    test: /[\\/]node_modules[\\/]@ant-design/,
+    priority: 10,
+    reuseExistingChunk: true,
+  },
+  antv: {
+    chunks: 'async',
+    name: 'antv',
+    test: (module: any) => /@antv/.test(module.context),
+    priority: 9,
+    reuseExistingChunk: false,
+  },
+  g2plot: {
+    chunks: 'async',
+    name: 'g2plot',
+    test: (module: any) => /g2plot/.test(module.context),
+    priority: 11,
+    reuseExistingChunk: true,
+  },
+  g6: {
+    chunks: 'async',
+    name: 'g6',
+    test: (module: any) => /g6/.test(module.context),
+    priority: 11,
+    reuseExistingChunk: true,
+  },
+  mapvgl: {
+    chunks: 'async',
+    name: 'mapvgl',
+    test: /[\\/]node_modules[\\/]mapvgl[\\/]/,
+    priority: 8,
+    reuseExistingChunk: false,
+  },
+  lodash: {
+    chunks: 'async',
+    name: 'lodash',
+    test: /[\\/]node_modules[\\/]lodash[\\/]/,
+    priority: 9,
+    reuseExistingChunk: true,
+  },
+  moment: {
+    chunks: 'async',
+    name: 'moment',
+    test: /[\\/]node_modules[\\/]moment[\\/]/,
+    priority: 11,
+    reuseExistingChunk: true,
+  },
+  xlsx: {
+    chunks: 'async',
+    name: 'xlsx',
+    test: /[\\/]node_modules[\\/]xlsx[\\/]/,
+    priority: 8,
+    reuseExistingChunk: true,
+  },
+  'js-export-excel': {
+    chunks: 'async',
+    name: 'js-export-excel',
+    test: /[\\/]node_modules[\\/]js-export-excel[\\/]/,
+    priority: 8,
+    reuseExistingChunk: true,
+  },
+  'react-dom': {
+    chunks: 'all',
+    name: 'react-dom',
+    test: /[\\/]node_modules[\\/]react-dom/,
+    priority: 8,
+    reuseExistingChunk: true,
+  },
+};
 
 //  重新设置静态资源输出目录
 const resetOutputDir = (config: any) => {
@@ -56,66 +139,18 @@ const compressCode = (config: any) => {
 
 // 代码分割
 const splitCacheGroups = {
-  antd: {
+  'core-js': {
     chunks: 'all',
-    name: 'antd',
-    test: /[\\/]node_modules[\\/](antd|@antd)[\\/]/,
-    priority: 10,
-  },
-  designpro: {
-    chunks: 'async',
-    name: 'designpro',
-    test: /[\\/]node_modules[\\/]@ant-design[\\/]/,
-    priority: 10,
+    name: 'core-js',
+    test: /[\\/]node_modules[\\/]core-js/,
+    priority: 8,
     reuseExistingChunk: true,
   },
-  routeutils: {
-    chunks: 'async',
-    name: 'route-utils',
-    test: /[\\/]node_modules[\\/]@umijs[\\/]route\-utils/,
+  '@umijs': {
+    chunks: 'all',
+    name: '@umijs',
+    test: /[\\/]node_modules[\\/]@umijs/,
     priority: 20,
-  },
-  g2plot: {
-    chunks: 'async',
-    name: 'g2plot',
-    test: (module: any) => /g2plot/.test(module.context),
-    priority: 11,
-    reuseExistingChunk: true,
-  },
-  g6: {
-    chunks: 'async',
-    name: 'g6',
-    test: (module: any) => /g6/.test(module.context),
-    priority: 11,
-    reuseExistingChunk: true,
-  },
-  lodash: {
-    chunks: 'async',
-    name: 'lodash',
-    test: /[\\/]node_modules[\\/]lodash[\\/]/,
-    priority: 9,
-    reuseExistingChunk: true,
-  },
-  moment: {
-    chunks: 'async',
-    name: 'moment',
-    test: /[\\/]node_modules[\\/]moment[\\/]/,
-    priority: 11,
-    reuseExistingChunk: true,
-  },
-  xlsx: {
-    chunks: 'async',
-    name: 'xlsx',
-    test: /[\\/]node_modules[\\/]xlsx[\\/]/,
-    priority: 8,
-    reuseExistingChunk: true,
-  },
-  jsExportExcel: {
-    chunks: 'async',
-    name: 'js-export-excel',
-    test: /[\\/]node_modules[\\/]js-export-excel[\\/]/,
-    priority: 8,
-    reuseExistingChunk: true,
   },
   vendors: {
     chunks: 'all',
@@ -130,6 +165,19 @@ const splitCacheGroups = {
   },
 };
 
+// 设置代码切割选项
+const PkgKeys = Object.keys(pkg.dependencies);
+const ModuleSplitKeys = Object.keys(moduleSplitRule);
+for (let i = 0; i < PkgKeys.length; i++) {
+  let index = ModuleSplitKeys.findIndex((key) => {
+    return PkgKeys[i].includes(key);
+  });
+
+  if (index > -1) {
+    splitCacheGroups[ModuleSplitKeys[index]] = moduleSplitRule[ModuleSplitKeys[index]];
+  }
+}
+
 export default {
   // 静态资源路径前缀
   publicPath: server.publicPath,
@@ -137,9 +185,11 @@ export default {
   base: server.base,
   chainWebpack: (config: any) => {
     config.when(process.env.NODE_ENV === 'production', (config: any) => {
+      // 执行路径重置
       resetOutputDir(config);
+      // 执行代码压缩
       compressCode(config);
-
+      // 合并代码切割配置
       config.merge({
         optimization: {
           minimize: true,
@@ -153,6 +203,7 @@ export default {
             cacheGroups: splitCacheGroups,
           },
         },
+        // 路径查找优化
         resolve: {
           modules: [path.resolve(__dirname, './src'), path.resolve(__dirname, './node_modules')],
         },
