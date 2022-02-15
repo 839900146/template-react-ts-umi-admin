@@ -22,14 +22,13 @@ export const initialStateConfig = {
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: IUserApi.CurrentUser;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<IUserApi.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
-      const { data, status } = await service.queryUserInfo();
-      if (status !== true) return undefined;
+      const data = await service.queryUserInfo();
       return data;
     } catch (error) {
       history.push(loginPath);
@@ -70,27 +69,47 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // 菜单左侧的开发文档链接, 只在开发模式下会展示, build后会自动剔除
     links: isDev
       ? [
-          <a href="https://ant.design/index-cn" target="_blank">
+          <a
+            key="AntDesign文档"
+            href="https://ant.design/index-cn"
+            target="_blank"
+            rel="noreferrer"
+          >
             <LinkOutlined />
             <span>AntDesign文档</span>
           </a>,
-          <a href="https://beta-pro.ant.design/index-cn" target="_blank">
+          <a
+            key="AntDesignPro文档"
+            href="https://beta-pro.ant.design/index-cn"
+            target="_blank"
+            rel="noreferrer"
+          >
             <LinkOutlined />
             <span>AntDesignPro文档</span>
           </a>,
-          <a href="https://procomponents.ant.design/" target="_blank">
+          <a
+            key="ProComponents文档"
+            href="https://procomponents.ant.design/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <LinkOutlined />
             <span>ProComponents文档</span>
           </a>,
-          <a href="https://umijs.org/zh-CN" target="_blank">
+          <a key="umijs文档" href="https://umijs.org/zh-CN" target="_blank" rel="noreferrer">
             <LinkOutlined />
             <span>umijs文档</span>
           </a>,
-          <a href="https://charts.ant.design/" target="_blank">
+          <a
+            key="antd chart文档"
+            href="https://charts.ant.design/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <LinkOutlined />
             <span>antd chart文档</span>
           </a>,
-          <a href="https://www.iconfont.cn/" target="_blank">
+          <a key="IconFont" href="https://www.iconfont.cn/" target="_blank" rel="noreferrer">
             <LinkOutlined />
             <span>IconFont</span>
           </a>,

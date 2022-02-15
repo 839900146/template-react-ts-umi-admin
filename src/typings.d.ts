@@ -28,3 +28,33 @@ interface ApiPrefix {
   prd: string;
   test: string;
 }
+
+declare module IUserApi {
+  interface CurrentUser {
+    user_id: string;
+    name: string;
+    phone: string;
+    avatar: string;
+    access: string;
+    country?: string;
+    email?: string;
+    address?: string;
+    [propName: string]: any;
+  }
+
+  interface LoginParams {
+    username: string;
+    password: string;
+    type: 'account' | 'mobile';
+  }
+
+  interface LoginResult {
+    status: boolean;
+    code: number;
+    msg?: string;
+    data: {
+      token: string;
+      type?: 'account' | 'mobile';
+    };
+  }
+}

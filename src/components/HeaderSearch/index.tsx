@@ -13,7 +13,7 @@ export type HeaderSearchProps = {
   onVisibleChange?: (b: boolean) => void;
   className?: string;
   placeholder?: string;
-  options: AutoCompleteProps['options'];
+  options?: AutoCompleteProps['options'];
   defaultVisible?: boolean;
   visible?: boolean;
   defaultValue?: string;
@@ -73,7 +73,7 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
         key="AutoComplete"
         className={inputClass}
         value={value}
-        options={restProps.options}
+        options={restProps.options || []}
         onChange={setValue}
       >
         <Input

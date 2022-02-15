@@ -30,7 +30,13 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<IUserApi.LoginResult>({
+    status: false,
+    code: 400,
+    data: {
+      token: '',
+    },
+  });
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -44,11 +50,11 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: IUserApi.LoginParams) => {
     try {
       // 登录
       if (!(values.username && values.password)) return;
-      const { data, msg, status } = await service.login({ ...values });
+      const { data, msg, status, code } = await service.login({ ...values });
       if (status === true) {
         message.success('登录成功！');
         // 设置token
@@ -63,12 +69,15 @@ const Login: React.FC = () => {
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      setUserLoginState({ ...userLoginState, msg, code, status });
     } catch (error) {
       message.error('登录失败，请重试！');
     }
   };
-  const { status, type: loginType } = userLoginState;
+  const {
+    status,
+    data: { type: loginType },
+  } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -88,7 +97,7 @@ const Login: React.FC = () => {
             <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as IUserApi.LoginParams);
           }}
         >
           <Tabs activeKey={type} onChange={setType}>
@@ -96,9 +105,7 @@ const Login: React.FC = () => {
             <Tabs.TabPane key="mobile" tab="手机号登录" />
           </Tabs>
 
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage content="账户或密码错误" />
-          )}
+          {status == !true && loginType === 'account' && <LoginMessage content="账户或密码错误" />}
           {type === 'account' && (
             <>
               <ProFormText
@@ -132,7 +139,7 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+          {status !== true && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
           {type === 'mobile' && (
             <>
               <ProFormText
