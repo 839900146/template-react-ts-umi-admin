@@ -80,7 +80,7 @@ services.xxx();
 
 同时, 在导入样式时, 应当以如下的方式进行导入
 
-```jsx
+```js
 import Styles from './xxx.less';
 ```
 
@@ -88,7 +88,7 @@ import Styles from './xxx.less';
 
 如果需要覆盖某些组件的默认样式, 如 antd, 不能直接去 global.less 写, 而应该采用如下写法
 
-```jsx
+```js
 import Styles from './xxx.less';
 <Select className={Styles['my-select']}></Select>;
 ```
