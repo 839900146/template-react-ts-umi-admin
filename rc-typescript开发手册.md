@@ -260,6 +260,8 @@ yarn add @types/xxx -D
 
 > - 某些依赖包的类型声明文件在 `@types` 中不一定有, 这时候可能就需要自己去写, 或者忽略 ts 的警告
 
+> - antd 组件的类型声明文件通常可以从 `antd/es/xxx` 中进行引入
+
 ---
 
 ### 全局声明文件
@@ -299,3 +301,81 @@ interface CurrentUser {
 ```
 
 ---
+
+### 局部声明文件
+
+局部类型声明文件跟全局声明文件写法基本一致, 放在哪个位置也无所谓, 区别在于, 局部类似声明文件不需要在 tsconfig.json 中进行配置
+
+其次, 局部类型声明文件中, 我们写的类型声明, 都应该使用 `export` 导出, 然后在需要使用的地方使用 `import type` 导入
+
+```tsx
+// demo.d.ts
+export interface IUserInfo {
+  id: string;
+  name: string;
+  age: number;
+  phone: string;
+}
+
+export type AccountStatus = '正常' | '冻结';
+
+export enum Roles {
+  USER,
+  ADMIN,
+}
+```
+
+```tsx
+// Demo.tsx
+import type { IUserInfo, AccountStatus, Roles } from './demo.d.ts';
+```
+
+> **import type** 表示我要导入的东西是类型声明
+
+---
+
+### Antd 类型声明
+
+#### TableColumn
+
+在使用 Table 组件的时候, 我们需要定义表格的字段, 假如我们希望在编写字段的时候, 能够获得类型提示, 我们需要引入 `ColumnType` 类型
+
+```tsx
+import { Table } from 'antd';
+import type { ColumnType } from 'antd/es/table';
+
+interface ITableColumns {
+  name: string;
+  age: number;
+  sex: '男' | '女' | '保密';
+}
+
+const Demo = () => {
+  const columns: ColumnType<ITableColumns>[] = [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      width: 150,
+      align: 'center',
+      render: (text, row, index) => text,
+    },
+  ];
+};
+```
+
+---
+
+#### FormRef
+
+前面讲 ref 的时候已经说过了, 要用 ref 引用 Form 的话, 需要导入 `FormInstance` 类型
+
+```tsx
+import { useRef } from 'react';
+import type { FormInstance } from 'antd/es/form';
+
+const Demo = () => {
+  let formRef = useRef<FormInstance>(null);
+
+  return <Form ref={formRef}></Form>;
+};
+```
