@@ -29,6 +29,26 @@ interface ApiPrefix {
   test: string;
 }
 
+interface IRouterConfig {
+  /**组件的相对路径, 相对于pages文件夹 */
+  component?: any;
+  /**如果为true, 则是绝对匹配 */
+  exact?: boolean;
+  /**浏览器访问该组件的路径 */
+  path?: string;
+  /**子路由 */
+  routes?: IRouterConfig[];
+  /**路由的高阶组件封装 */
+  wrappers?: string[];
+  /**配置路由的标题 */
+  name?: string;
+  /**路由菜单的图标名, 图标名只支持antd的图标 */
+  icon?: string;
+  /**路由重定向 */
+  redirect?: string;
+  [key: string]: any;
+}
+
 declare module IUserApi {
   interface CurrentUser {
     user_id: string;

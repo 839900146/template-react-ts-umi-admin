@@ -1,4 +1,4 @@
-﻿export default [
+﻿const routers: IRouterConfig[] = [
   {
     path: '/user',
     layout: false,
@@ -32,3 +32,5 @@
     component: './404',
   },
 ];
+
+export default routers;
