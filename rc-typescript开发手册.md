@@ -126,6 +126,135 @@ const Demo = (props: IDemoProps) => {
 
 ---
 
+### dva
+
+如果我们需要用到 dva 来做数据管理, 我们也需要遵循一定的开发规范和流程以下我们将给出一个 model 的写法格式, 并同时列举出新写法和旧写法两种模式
+
+#### model 写法
+
+首先我们得明确,怎么编写一个 model, 如何让 umi 识别我们写的是一个 model?
+
+- src/models/xxx.ts
+- src/pages/xxx/models/xxx.ts
+- src/pages/xxx/xxx.model.ts
+
+只要符合以上三种情况之一的 js 或 ts 文件, 就会被 umi 自动识别为一个 dva 的 model
+
+**写法示例**
+
+```javascript
+import type { Effect, Reducer } from 'umi';
+const namespace = 'modelName';
+
+/**
+ * state的类型
+ */
+export interface IndexModelState {
+  zzz: string;
+}
+
+/**
+ * model的类型接口
+ */
+export interface IndexModelType {
+  namespace: typeof namespace;
+  state: IndexModelState;
+  effects: {
+    xxx: Effect,
+  };
+  reducers: {
+    yyy: Reducer<IndexModelState>,
+  };
+}
+
+/**
+ * model的实现
+ */
+const IndexModel: IndexModelType = {
+  namespace,
+
+  state: {
+    zzz: '',
+  },
+
+  effects: {
+    *xxx({ payload }, { put }) {
+      console.log('effects yyy', payload);
+      // 如果访问的是本文件里的reduces, 则不需要带上namespace
+      yield put({ type: 'yyy', payload });
+    },
+  },
+
+  reducers: {
+    yyy(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+  },
+};
+
+export default IndexModel;
+```
+
+> 观察上面的例子,相信有点 umi 基础的都能看得懂, 这里就不多赘述了主要是提醒大家在使用 ts 编写时要注意的点, state, effect, reducers 都要从 umi 中导入相应的类型声明
+
+到此, 我们就写好了一个 model, 那么, 我们在页面中如何使用呢? 在最新版 umi 或 dva 中, 我们有 2 种使用的方式, 如下:
+
+#### connect 方式
+
+connect 算是旧方式了, 也是现在不推荐的写法, 因为当页面多的话, 写起来会感觉很累赘
+
+```typescript jsx
+import { FC } from 'react';
+import { connect, ConnectProps } from 'umi';
+import type { IndexModelState } from 'xxx';
+
+interface IPageProps extends ConnectProps {
+  state: IndexModelState;
+}
+
+const Demo: FC<IPageProps> = (props) => {
+  return <h1>{props.state.zzz}</h1>;
+};
+
+const mapStateToProps = (state) => {
+  return {
+    // 这里的modelName是我们定义的namespace
+    state: state.modelName,
+  };
+};
+
+export default connect(mapStateToProps)(Demo);
+```
+
+> 可以看到我们上面写的这个例子, 看上去有点繁琐
+
+#### hooks 方式
+
+```typescript jsx
+import { useDispatch, useSelector } from 'umi';
+import type { Dispatch } from 'umi';
+import type { IndexModelState } from 'xxx';
+
+const Demo = () => {
+  // 获取dispatch
+  const dispatch = useDispatch<Dispatch>();
+
+  // 获取state
+  const state = useSelector(({ homeModel }: { homeModel: IndexModelState }) => homeModel);
+
+  return <h1>{state.zzz}</h1>;
+};
+
+export default Demo;
+```
+
+> 而用了 hooks 写法之后, 我们的代码看上去就清爽了很多
+
+---
+
 ### Ref
 
 如果我们在组件中用到了 `useRef` 或者 `createRef` , 可能我们也需要去指定其绑定元素的类型
