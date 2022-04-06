@@ -19,6 +19,7 @@ export const initialStateConfig = {
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
+ * 全局共享数据, 在这里return出的东西, 在任何地方都可以通过 useModel('@@initialState') 直接获取到这份数据
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
