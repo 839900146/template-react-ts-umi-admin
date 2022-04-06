@@ -15,8 +15,6 @@ export default defineConfig({
   dva: {
     // model热更新
     hmr: true,
-    // 兼容至ie11
-    immer: { enableES5: true },
     // 禁止model类型导出至umi
     disableModelsReExport: true,
     // 启用model懒加载, 防止umi变量出现循环引用

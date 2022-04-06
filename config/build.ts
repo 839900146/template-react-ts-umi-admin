@@ -200,6 +200,14 @@ export default {
   // 网站二级目录
   base: server.base,
   devtool: isProduction ? false : 'eval-cheap-module-source-map',
+  alias: {
+    '@': path.resolve(__dirname, '../src'),
+    '@pages': path.resolve(__dirname, '../src/pages'),
+    '@services': path.resolve(__dirname, '../src/services'),
+    '@models': path.resolve(__dirname, '../src/models'),
+    '@utils': path.resolve(__dirname, '../src/utils'),
+    '@components': path.resolve(__dirname, '../src/components'),
+  },
   ...CdnConfig,
   chainWebpack: (config: any) => {
     config.when(isProduction, (config: any) => {
