@@ -6,6 +6,7 @@ import path from 'path';
 import CompressionWebpackPlugin from 'compression-webpack-plugin';
 import server from './server';
 import pkg from '../package.json';
+
 const isProduction = process.env.NODE_ENV === 'production';
 // CDN配置
 const CdnConfig = {
@@ -26,77 +27,71 @@ const moduleSplitRule = {
   antd: {
     chunks: 'all',
     name: 'antd',
-    test: /[\\/]node_modules[\\/](antd|@antd)[\\/]/,
-    priority: 10,
-  },
-  '@ant-design': {
-    chunks: 'all',
-    name: '@ant-design',
-    test: /[\\/]node_modules[\\/]@ant-design/,
-    priority: 10,
-    reuseExistingChunk: true,
+    test: /[\\/]node_modules[\\/](antd|@antd|@ant-design)[\\/]?/,
+    priority: 20,
+    // reuseExistingChunk: true,
   },
   antv: {
-    chunks: 'async',
+    chunks: 'all',
     name: 'antv',
     test: (module: any) => /@antv/.test(module.context),
-    priority: 9,
+    priority: 10,
     reuseExistingChunk: false,
   },
   g2plot: {
-    chunks: 'async',
+    chunks: 'all',
     name: 'g2plot',
     test: (module: any) => /g2plot/.test(module.context),
     priority: 11,
     reuseExistingChunk: true,
   },
   g6: {
-    chunks: 'async',
+    chunks: 'all',
     name: 'g6',
     test: (module: any) => /g6/.test(module.context),
     priority: 11,
     reuseExistingChunk: true,
   },
   mapvgl: {
-    chunks: 'async',
+    chunks: 'all',
     name: 'mapvgl',
     test: /[\\/]node_modules[\\/]mapvgl[\\/]/,
-    priority: 8,
+    priority: 10,
     reuseExistingChunk: false,
   },
   lodash: {
-    chunks: 'async',
+    chunks: 'all',
     name: 'lodash',
     test: /[\\/]node_modules[\\/]lodash[\\/]/,
-    priority: 9,
+    priority: 10,
     reuseExistingChunk: true,
   },
   moment: {
-    chunks: 'async',
+    chunks: 'all',
     name: 'moment',
     test: /[\\/]node_modules[\\/]moment[\\/]/,
-    priority: 11,
+    priority: 10,
     reuseExistingChunk: true,
   },
   xlsx: {
-    chunks: 'async',
+    chunks: 'all',
     name: 'xlsx',
     test: /[\\/]node_modules[\\/]xlsx[\\/]/,
-    priority: 8,
+    priority: 20,
     reuseExistingChunk: true,
   },
   'js-export-excel': {
-    chunks: 'async',
+    chunks: 'all',
     name: 'js-export-excel',
     test: /[\\/]node_modules[\\/]js-export-excel[\\/]/,
-    priority: 8,
+    priority: 20,
     reuseExistingChunk: true,
   },
   'react-dom': {
     chunks: 'all',
     name: 'react-dom',
     test: /[\\/]node_modules[\\/]react-dom/,
-    priority: 8,
+    priority: 10,
     reuseExistingChunk: true,
   },
 };
@@ -177,7 +172,9 @@ const splitCacheGroups = {
     reuseExistingChunk: true,
   },
   default: {
-    priority: -10,
+    name: 'default',
+    priority: -20,
+    reuseExistingChunk: true,
   },
 };
 
