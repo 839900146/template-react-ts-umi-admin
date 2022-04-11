@@ -170,11 +170,7 @@ const splitCacheGroups = {
     test: /[\\/]node_modules[\\/]/,
     priority: -10,
     reuseExistingChunk: true,
-  },
-  default: {
-    name: 'default',
-    priority: -20,
-    reuseExistingChunk: true,
+    enforce: true,
   },
 };
 
@@ -214,6 +210,9 @@ export default {
       compressCode(config);
       // 合并代码切割配置
       config.merge({
+        cache: {
+          type: 'filesystem',
+        },
         optimization: {
           minimize: true,
           splitChunks: {
