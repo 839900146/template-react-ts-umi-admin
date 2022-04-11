@@ -51,6 +51,7 @@ interface SelectFile {
   webkitdirectory: boolean;
   accept: string;
 }
+
 /**
  * 选择文件
  * @param conf 可选配置
@@ -71,3 +72,30 @@ export const selectFile = (conf?: SelectFile): Promise<any> => {
     fileInput.click();
   });
 };
+
+/**
+ * 获取变量的类型
+ * @param val 要检测的变量
+ */
+export function typeIs(val: unknown): string {
+  return Object.prototype.toString.call(val).slice(8, -1).toLowerCase();
+}
+
+/**
+ * 判断val是否为空变量(false, null, undefined, '', NaN, 空对象, 空变量), 0不算
+ * @param val 要检测的变量
+ * @return 假值true, 真值false
+ */
+export function validEmpty(val: unknown): boolean {
+  if (val === false) return true;
+
+  if (typeof val === 'number') return Number.isNaN(val);
+
+  if (typeof val === 'string') return val.trim().length === 0;
+
+  if (Array.isArray(val)) return val.length === 0;
+
+  if (typeIs(val) === 'object') return JSON.stringify(val) === '{}';
+
+  return !val;
+}
