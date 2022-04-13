@@ -106,7 +106,7 @@ const resetOutputDir = (config: any) => {
     .use('url-loader')
     .loader(require.resolve('url-loader'))
     .tap((options: any) => {
-      const newOptions = {
+      return {
         ...options,
         name: assetDir + '/img/[name].[hash:8].[ext]',
         fallback: {
@@ -117,7 +117,6 @@ const resetOutputDir = (config: any) => {
           },
         },
       };
-      return newOptions;
     });
 };
 

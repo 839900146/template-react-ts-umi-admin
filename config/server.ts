@@ -3,7 +3,7 @@ export default {
   /**
    * token保存至localStorage中的键
    */
-  tokenKey: 'webapp-user-token',
+  tokenKey: 'webapp-User-token',
   /**
    * 设置在xhr headers中token的键
    */

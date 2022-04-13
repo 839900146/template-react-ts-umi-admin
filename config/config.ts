@@ -57,7 +57,7 @@ export default defineConfig({
   nodeModulesTransform: { type: 'none' },
   mfsu: {},
   webpack5: {},
-  // 如果项目用到了动态路由, 例如/web/user/:id, 并且你的电脑是windows操作系统, 就必须把下面这个exportStatic注释掉,否则无法编译打包
+  // 如果项目用到了动态路由, 例如/web/User/:id, 并且你的电脑是windows操作系统, 就必须把下面这个exportStatic注释掉,否则无法编译打包
   exportStatic: {},
   // 开启代码压缩
   terserOptions: {},

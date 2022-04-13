@@ -1,15 +1,15 @@
 ﻿const routers: IRouterConfig[] = [
   {
-    path: '/user',
+    path: '/User',
     layout: false,
     routes: [
       {
-        path: '/user',
+        path: '/User',
         routes: [
           {
             name: 'login',
-            path: '/user/login',
-            component: './user/Login',
+            path: '/User/login',
+            component: './User/Login',
           },
         ],
       },
