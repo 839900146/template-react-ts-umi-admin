@@ -8,6 +8,7 @@ import server from './server';
 import pkg from '../package.json';
 
 const isProduction = process.env.NODE_ENV === 'production';
+
 // CDN配置
 const CdnConfig = {
   externals: {
@@ -22,57 +23,6 @@ const CdnConfig = {
     'https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.0/moment.min.js',
     'https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.0/lodash.min.js',
   ],
-};
-const moduleSplitRule = {
-  antd: {
-    name: 'antd',
-    minChunks: 1,
-    test: /[\\/]node_modules[\\/](antd|@antd|@ant-design)[\\/]?/,
-    priority: 20,
-    reuseExistingChunk: true,
-  },
-  '@ant-design/charts': {
-    name: '@ant-design-charts',
-    minChunks: 1,
-    test: /[\\/]node_modules[\\/]@antv[\\/]g2plot(-(.*))?[\\/]/,
-    priority: 20,
-    reuseExistingChunk: true,
-  },
-  '@antv/g2': {
-    name: 'antv-g2',
-    minChunks: 1,
-    test: /[\\/]node_modules[\\/]@antv[\\/]g2(-(.*))?[\\/]/,
-    priority: 20,
-    reuseExistingChunk: true,
-  },
-  '@antv/g6': {
-    name: 'antv-g6',
-    minChunks: 1,
-    test: /[\\/]node_modules[\\/]@antv[\\/]g6(-(.*))?[\\/]/,
-    priority: 20,
-    reuseExistingChunk: true,
-  },
-  echarts: {
-    name: 'echarts',
-    minChunks: 1,
-    test: /[\\/]node_modules[\\/](echarts|zrender)[\\/]/,
-    priority: 20,
-    reuseExistingChunk: true,
-  },
-  xlsx: {
-    name: 'xlsx',
-    minChunks: 1,
-    test: /[\\/]node_modules[\\/]xlsx[\\/]/,
-    priority: 20,
-    reuseExistingChunk: true,
-  },
-  'js-export-excel': {
-    name: 'js-export-excel',
-    minChunks: 1,
-    test: /[\\/]node_modules[\\/]js-export-excel[\\/]/,
-    priority: 20,
-    reuseExistingChunk: true,
-  },
 };
 
 //  重新设置静态资源输出目录
@@ -126,8 +76,61 @@ const compressCode = (config: any) => {
   ]);
 };
 
-// 代码分割
-const splitCacheGroups = {
+// 自定义代码分割规则
+const CustomSplitCacheGroups = {
+  antd: {
+    name: 'antd',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/](antd|@antd|@ant-design)[\\/]?/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
+  '@ant-design/charts': {
+    name: '@ant-design-charts',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/]@antv[\\/]g2plot(-(.*))?[\\/]/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
+  '@antv/g2': {
+    name: 'antv-g2',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/]@antv[\\/]g2(-(.*))?[\\/]/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
+  '@antv/g6': {
+    name: 'antv-g6',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/]@antv[\\/]g6(-(.*))?[\\/]/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
+  echarts: {
+    name: 'echarts',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/](echarts|zrender)[\\/]/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
+  xlsx: {
+    name: 'xlsx',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/]xlsx[\\/]/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
+  'js-export-excel': {
+    name: 'js-export-excel',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/]js-export-excel[\\/]/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
+};
+
+// 默认代码分割规则
+const DefaultSplitCacheGroups = {
   'core-js': {
     name: 'core-js',
     minChunks: 1,
@@ -178,14 +181,15 @@ const splitCacheGroups = {
 
 // 设置代码切割选项
 const PkgKeys = Object.keys(pkg.dependencies);
-const ModuleSplitKeys = Object.keys(moduleSplitRule);
+const ModuleSplitKeys = Object.keys(CustomSplitCacheGroups);
 for (let i = 0; i < PkgKeys.length; i++) {
   let index = ModuleSplitKeys.findIndex((key) => {
     return PkgKeys[i].includes(key);
   });
 
   if (index > -1) {
-    splitCacheGroups[ModuleSplitKeys[index]] = moduleSplitRule[ModuleSplitKeys[index]];
+    DefaultSplitCacheGroups[ModuleSplitKeys[index]] =
+      CustomSplitCacheGroups[ModuleSplitKeys[index]];
   }
 }
 
@@ -225,7 +229,7 @@ export default {
             maxAsyncRequests: 30,
             maxInitialRequests: 30,
             enforceSizeThreshold: 50000,
-            cacheGroups: splitCacheGroups,
+            cacheGroups: DefaultSplitCacheGroups,
           },
         },
         // 路径查找优化
