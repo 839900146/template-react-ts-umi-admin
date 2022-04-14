@@ -25,7 +25,6 @@ const CdnConfig = {
 };
 const moduleSplitRule = {
   antd: {
-    chunks: 'all',
     name: 'antd',
     minChunks: 1,
     test: /[\\/]node_modules[\\/](antd|@antd|@ant-design)[\\/]?/,
@@ -33,7 +32,6 @@ const moduleSplitRule = {
     reuseExistingChunk: true,
   },
   antv: {
-    chunks: 'all',
     name: 'antv',
     minChunks: 1,
     test: (module: any) => /@antv/.test(module.context),
@@ -41,7 +39,6 @@ const moduleSplitRule = {
     reuseExistingChunk: true,
   },
   g2plot: {
-    chunks: 'all',
     name: 'g2plot',
     minChunks: 1,
     test: (module: any) => /g2plot/.test(module.context),
@@ -49,7 +46,6 @@ const moduleSplitRule = {
     reuseExistingChunk: true,
   },
   g6: {
-    chunks: 'all',
     name: 'g6',
     minChunks: 1,
     test: (module: any) => /g6/.test(module.context),
@@ -57,7 +53,6 @@ const moduleSplitRule = {
     reuseExistingChunk: true,
   },
   mapvgl: {
-    chunks: 'all',
     name: 'mapvgl',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]mapvgl[\\/]/,
@@ -65,7 +60,6 @@ const moduleSplitRule = {
     reuseExistingChunk: true,
   },
   xlsx: {
-    chunks: 'all',
     name: 'xlsx',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]xlsx[\\/]/,
@@ -73,7 +67,6 @@ const moduleSplitRule = {
     reuseExistingChunk: true,
   },
   'js-export-excel': {
-    chunks: 'all',
     name: 'js-export-excel',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]js-export-excel[\\/]/,
@@ -136,7 +129,6 @@ const compressCode = (config: any) => {
 // 代码分割
 const splitCacheGroups = {
   'core-js': {
-    chunks: 'all',
     name: 'core-js',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]core-js/,
@@ -144,35 +136,30 @@ const splitCacheGroups = {
     reuseExistingChunk: true,
   },
   '@umijs': {
-    chunks: 'all',
     name: '@umijs',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]@umijs/,
     priority: 20,
   },
   dva: {
-    chunks: 'all',
     name: 'dva',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]dva/,
     priority: 20,
   },
   'react-color': {
-    chunks: 'all',
     name: 'react-color',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]react-color/,
     priority: 20,
   },
   rc: {
-    chunks: 'all',
     name: 'rc',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]rc-(.+)[\\/]es/,
     priority: 20,
   },
   vendors: {
-    chunks: 'all',
     name: 'vendors',
     test: /[\\/]node_modules[\\/]/,
     priority: -10,
