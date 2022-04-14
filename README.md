@@ -8,6 +8,7 @@
 4. 优化打包构建配置
 5. 优化前端 proxy 写法
 6. 封装 request 请求方法
+7. 对 `@ant-design/charts`, `antv/g2系列`, `antv/g6系列`, `echarts` 可视化图表库的构建优化
 
 ---
 
