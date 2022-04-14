@@ -192,7 +192,7 @@ yarn commit
 /News/Today/:id
 ```
 
-可使用 `querystring` 的形式替代动态路由动态路由在打包构建的时候, windows 系统下极有可能会失败
+可使用 `querystring` 的形式替代动态路由, 动态路由在打包构建的时候, windows 系统下极有可能会失败
 
 ### 其它错误
 
