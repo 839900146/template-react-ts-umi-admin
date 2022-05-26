@@ -18,10 +18,10 @@ const CdnConfig = {
     lodash: 'window._',
   },
   scripts: [
-    'https://cdn.bootcdn.net/ajax/libs/react/17.0.0/umd/react.production.min.js',
-    'https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.0/umd/react-dom.production.min.js',
-    'https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.0/moment.min.js',
-    'https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.0/lodash.min.js',
+    'https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/react/17.0.0/umd/react.production.min.js',
+    'https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-dom/17.0.0/umd/react-dom.production.min.js',
+    'https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/moment.js/2.29.0/moment.min.js',
+    'https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/lodash.js/4.17.0/lodash.min.js',
   ],
 };
 
@@ -106,6 +106,13 @@ const CustomSplitCacheGroups = {
     priority: 20,
     reuseExistingChunk: true,
   },
+  '@antv/x6': {
+    name: 'antv-x6',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/]@antv[\\/]x6(-(.*))?[\\/]/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
   echarts: {
     name: 'echarts',
     minChunks: 1,
@@ -124,6 +131,13 @@ const CustomSplitCacheGroups = {
     name: 'js-export-excel',
     minChunks: 1,
     test: /[\\/]node_modules[\\/]js-export-excel[\\/]/,
+    priority: 20,
+    reuseExistingChunk: true,
+  },
+  '@jiaminghi/data-view-react': {
+    name: 'data-view-react',
+    minChunks: 1,
+    test: /[\\/]node_modules[\\/]@jiaminghi[\\/]data-view-react[\\/]/,
     priority: 20,
     reuseExistingChunk: true,
   },
