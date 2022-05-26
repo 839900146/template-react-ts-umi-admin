@@ -37,9 +37,10 @@ export default {
    * 网站二级目录
    */
   base: '/web/',
-
   /**
-   * 需要注入的全局数据（打包后仍然有效，会自动挂载到window对象身上）
+   * 需要注入的全局数据（编译时使用）
    */
-  injectData: process.env,
+  injectData: {
+    ...process.env, // 这一行不要删除，因为程序中有用到
+  },
 };
