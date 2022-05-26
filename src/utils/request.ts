@@ -3,7 +3,6 @@ import type { RequestOptionsInit } from 'umi-request';
 import { notification } from 'antd';
 import server from '../../config/server';
 import { GetToken } from '@/utils';
-const { REACT_APP_ENV } = process.env;
 const apiPrefix: ApiPrefix = server.apiPrefix;
 
 type mapErrCode = 400 | 401 | 403 | 404 | 500;
@@ -59,32 +58,16 @@ request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
 });
 
 export default {
-  get: async (url: string, parameter?: Record<string, unknown>): Promise<any> => {
-    try {
-      return await request(url, { method: 'get', params: parameter });
-    } catch (error) {
-      console.error(error);
-    }
+  get: async <T>(url: string, parameter?: Record<string, any>): Promise<T> => {
+    return await request(url, { method: 'get', params: parameter });
   },
-  post: async (url: string, parameter?: Record<string, unknown>): Promise<any> => {
-    try {
-      return await request(url, { method: 'post', data: parameter });
-    } catch (error) {
-      console.error(error);
-    }
+  post: async <T>(url: string, parameter?: Record<string, any>): Promise<T> => {
+    return await request(url, { method: 'post', data: parameter });
   },
-  delete: async (url: string, parameter?: Record<string, unknown>): Promise<any> => {
-    try {
-      return await request(url, { method: 'delete', params: parameter });
-    } catch (error) {
-      console.error(error);
-    }
+  delete: async <T>(url: string, parameter?: Record<string, any>): Promise<T> => {
+    return await request(url, { method: 'delete', params: parameter });
   },
-  put: async (url: string, parameter?: Record<string, unknown>): Promise<any> => {
-    try {
-      return await request(url, { method: 'put', data: parameter });
-    } catch (error) {
-      console.error(error);
-    }
+  put: async <T>(url: string, parameter?: Record<string, any>): Promise<T> => {
+    return await request(url, { method: 'put', data: parameter });
   },
 };

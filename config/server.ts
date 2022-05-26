@@ -12,9 +12,9 @@ export default {
    * 不同环境下, 发送请求的前缀
    */
   apiPrefix: {
-    dev: 'http://localhost:8888/api',
-    prd: '/api',
-    test: 'http://localhost:8888/api',
+    dev: '/dev/api',
+    prd: '/prd/api',
+    test: '/test/api',
   },
   /**
    * 前端代理服务器
@@ -37,4 +37,9 @@ export default {
    * 网站二级目录
    */
   base: '/web/',
+
+  /**
+   * 需要注入的全局数据（打包后仍然有效，会自动挂载到window对象身上）
+   */
+  injectData: process.env,
 };

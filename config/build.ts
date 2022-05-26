@@ -213,6 +213,7 @@ export default {
   // 网站二级目录
   base: server.base,
   devtool: isProduction ? false : 'eval-cheap-module-source-map',
+  define: server.injectData || {},
   alias: {
     '@': path.resolve(__dirname, '../src'),
     '@pages': path.resolve(__dirname, '../src/pages'),
