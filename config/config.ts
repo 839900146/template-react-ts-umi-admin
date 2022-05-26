@@ -32,7 +32,12 @@ export default defineConfig({
     loading: '@ant-design/pro-layout/es/PageLoading',
   },
   targets: {
-    ie: 11,
+    chrome: 80,
+    ie: false,
+    firefox: false,
+    safari: false,
+    edge: false,
+    ios: false,
   },
   // umi routes: https://umijs.org/docs/routing
   routes,
@@ -54,7 +59,7 @@ export default defineConfig({
   // Fast Refresh 热更新, 一般我们选择关闭, 因为它虽然可以保存界面state, 但却会影响界面样式的热更新
   // fastRefresh: {},
   // 禁止babel编译node_modules下的文件
-  nodeModulesTransform: { type: 'none' },
+  nodeModulesTransform: { type: 'none', exclude: [] },
   mfsu: {},
   webpack5: {},
   // 如果项目用到了动态路由, 例如/web/User/:id, 并且你的电脑是windows操作系统, 就必须把下面这个exportStatic注释掉,否则无法编译打包

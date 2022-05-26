@@ -225,33 +225,33 @@ export default {
   ...CdnConfig,
   chunks: ['vendors', 'core-js', 'dva', 'react-color', 'rc', '@umijs', 'umi', 'antd'],
   chainWebpack: (config: any) => {
-    config.when(isProduction, (config: any) => {
+    if (isProduction) {
       // 执行路径重置
       resetOutputDir(config);
       // 执行代码压缩
       compressCode(config);
-      // 合并代码切割配置
-      config.merge({
-        cache: {
-          type: 'filesystem',
+    }
+    // 合并代码切割配置
+    config.merge({
+      cache: {
+        type: 'filesystem',
+      },
+      optimization: {
+        minimize: true,
+        splitChunks: {
+          chunks: 'all',
+          minSize: 30000,
+          minChunks: 2,
+          maxAsyncRequests: 30,
+          maxInitialRequests: 30,
+          enforceSizeThreshold: 50000,
+          cacheGroups: DefaultSplitCacheGroups,
         },
-        optimization: {
-          minimize: true,
-          splitChunks: {
-            chunks: 'all',
-            minSize: 20000,
-            minChunks: 2,
-            maxAsyncRequests: 30,
-            maxInitialRequests: 30,
-            enforceSizeThreshold: 50000,
-            cacheGroups: DefaultSplitCacheGroups,
-          },
-        },
-        // 路径查找优化
-        resolve: {
-          modules: [path.resolve(__dirname, './src'), path.resolve(__dirname, './node_modules')],
-        },
-      });
+      },
+      // 路径查找优化
+      resolve: {
+        modules: [path.resolve(__dirname, './src'), path.resolve(__dirname, './node_modules')],
+      },
     });
   },
 };
