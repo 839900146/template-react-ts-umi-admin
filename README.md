@@ -210,6 +210,7 @@ yarn commit
 - `@ant-design/charts`
 - `antv/g2系列`
 - `antv/g6系列`
+- `antv/x6系列`
 - `echarts`
 
 因为本系统对上述 4 款可视化图表库做了一定的性能优化, 因而进行推荐
