@@ -10,7 +10,7 @@ import { LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/User/login';
+const loginPath = '/User/Login';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -125,7 +125,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       return (
         <>
           {children}
-          {!props.location?.pathname?.includes('/login') && (
+          {!props.location?.pathname?.includes('/Login') && (
             <SettingDrawer
               enableDarkTheme
               settings={initialState?.settings}

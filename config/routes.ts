@@ -8,8 +8,8 @@
         routes: [
           {
             name: 'login',
-            path: '/User/login',
-            component: './User/Login',
+            path: '/User/Login',
+            component: './User/Login/Login',
           },
         ],
       },

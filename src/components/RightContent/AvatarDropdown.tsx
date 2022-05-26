@@ -16,10 +16,10 @@ const loginOut = async () => {
   const { query = {}, search, pathname } = history.location;
   const { redirect } = query;
   // Note: There may be security issues, please note
-  if (window.location.pathname !== '/User/login' && !redirect) {
+  if (window.location.pathname !== '/User/Login' && !redirect) {
     localStorage.clear();
     history.replace({
-      pathname: '/User/login',
+      pathname: '/User/Login',
       search: stringify({
         redirect: pathname + search,
       }),
